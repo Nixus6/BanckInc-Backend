@@ -7,6 +7,7 @@ import java.util.Optional;
 
 public interface CardRepository {
     Card save(Card card);
+    void activateCard(Long cardId);
 //    Optional<List<Card>> activateCard(int cardId);
 //
 //    void blockCard(int cardId);

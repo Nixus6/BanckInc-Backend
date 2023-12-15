@@ -25,6 +25,8 @@ public class CardEntity extends AuditableEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TypeCard typeCard;
+    @Column(nullable = false)
+    private Boolean state;
     @Column(name = "expirationAt", columnDefinition = "DATETIME")
     private LocalDateTime expirationDate;
     @OneToMany(mappedBy = "card")

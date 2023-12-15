@@ -12,9 +12,10 @@ import java.util.List;
 @Setter
 @Builder
 public class Card {
-    private Long cardId;
+    private long cardId;
     private int balance;
     private int quota;
+    private boolean state;
     private TypeCard typeCard;
     private LocalDateTime expiration;
 }

@@ -21,4 +21,9 @@ public class CardPerRepository implements CardRepository {
         CardEntity cardEntity = mapper.toCardEntity(card);
         return mapper.toCard(cardCrudRepository.save(cardEntity));
     }
+
+    @Override
+    public void activateCard(Long cardId) {
+        cardCrudRepository.activateCard(cardId);
+    }
 }
