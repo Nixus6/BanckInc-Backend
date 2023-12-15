@@ -1,23 +1,23 @@
 package com.credibanco.bankincback.persistence.entity;
 
+import com.credibanco.bankincback.persistence.audit.AuditableEntity;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.Calendar;
 import java.util.List;
 
 @Entity
 @Table(name="card")
+@EntityListeners({AuditingEntityListener.class})
 @Getter
 @Setter
 @NoArgsConstructor
-public class CardEntity {
+public class CardEntity extends AuditableEntity {
     @Id
     @Column(name="id_card", nullable = false, length = 16)
-    private Integer idCard;
+    private Long idCard;
     @Column(nullable = false)
     private Integer balance;
     @Column(nullable = false)
@@ -27,11 +27,6 @@ public class CardEntity {
     private TypeCard typeCard;
     @Column(name = "expirationAt", columnDefinition = "DATETIME")
     private LocalDateTime expirationDate;
-    @Column(name = "createdAt", columnDefinition = "DATETIME")
-    private LocalDateTime createDate;
-    @Column(name = "updatedAt", columnDefinition = "DATETIME")
-    private LocalDateTime updateDate;
     @OneToMany(mappedBy = "card")
     private List<TransactionEntity> transactions;
-
 }
