@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import org.slf4j.Logger;
 
@@ -54,5 +56,9 @@ public class CardService {
     @Transactional
     public void rechargeBalance(Integer balance,Long cardId){
         this.cardRepository.rechargeBalance(balance, cardId);
+    }
+
+    public Optional<List<Card>> checkBalance(Long cardId) {
+        return this.cardRepository.checkBalance(cardId);
     }
 }

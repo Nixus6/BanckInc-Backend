@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/card")
 public class CardController {
@@ -55,5 +57,12 @@ public class CardController {
             log.error("balance", e);
             return ResponseEntity.badRequest().build(); // Otra respuesta de acuerdo a tu lógica
         }
+    }
+
+    @GetMapping("/balance/{cardId}")
+    public ResponseEntity<List<Card>> checkBalance(@PathVariable Long cardId){
+        return this.cardService.checkBalance(cardId)
+                .map(cards -> new ResponseEntity<>(cards, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }

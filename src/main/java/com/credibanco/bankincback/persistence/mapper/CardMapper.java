@@ -7,6 +7,9 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
+import java.util.List;
+import java.util.Optional;
+
 @Mapper(componentModel = "spring")
 public interface CardMapper {
     @Mappings({
@@ -14,7 +17,7 @@ public interface CardMapper {
             @Mapping(source="expirationDate", target = "expiration")
     })
     Card toCard(CardEntity cardEntity);
-
+    List<Card> toCards(List<CardEntity> cardEntities);
     @InheritInverseConfiguration
     @Mapping(target = "transactions", ignore = true)
     CardEntity toCardEntity(Card card);

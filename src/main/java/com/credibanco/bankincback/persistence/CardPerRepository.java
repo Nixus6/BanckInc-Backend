@@ -8,6 +8,9 @@ import com.credibanco.bankincback.persistence.mapper.CardMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
+
 @Repository
 public class CardPerRepository implements CardRepository {
     @Autowired
@@ -36,4 +39,10 @@ public class CardPerRepository implements CardRepository {
     public void rechargeBalance(Integer balance,Long cardId) {
         cardCrudRepository.rechargeBalance(balance, cardId);
     }
+    @Override
+    public Optional<List<Card>> checkBalance(Long cardId) {
+        List<CardEntity> card = cardCrudRepository.findByIdCard(cardId);
+        return Optional.of(mapper.toCards(card));
+    }
+
 }
