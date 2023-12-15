@@ -26,4 +26,14 @@ public class CardPerRepository implements CardRepository {
     public void activateCard(Long cardId) {
         cardCrudRepository.activateCard(cardId);
     }
+
+    @Override
+    public void blockCard(Long cardId) {
+        cardCrudRepository.blockCard(cardId);
+    }
+
+    @Override
+    public void rechargeBalance(Integer balance,Long cardId) {
+        cardCrudRepository.rechargeBalance(balance, cardId);
+    }
 }

@@ -47,4 +47,12 @@ public class CardService {
         this.cardRepository.activateCard(cardId);
     }
 
+    @Transactional
+    public void blockCard(Long cardId){
+        this.cardRepository.blockCard(cardId);
+    }
+    @Transactional
+    public void rechargeBalance(Integer balance,Long cardId){
+        this.cardRepository.rechargeBalance(balance, cardId);
+    }
 }

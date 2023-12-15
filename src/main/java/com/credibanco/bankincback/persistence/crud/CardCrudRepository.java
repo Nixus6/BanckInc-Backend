@@ -7,12 +7,24 @@ import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.query.Param;
 
 public interface CardCrudRepository extends ListCrudRepository<CardEntity,Integer>{
-
     @Query(value =
             "UPDATE card " +
                     "SET state = true " +
                     "WHERE id_card = :idCard", nativeQuery = true)
     @Modifying
     void activateCard(@Param("idCard") Long cardId);
+    @Query(value =
+            "UPDATE card " +
+                    "SET state = false " +
+                    "WHERE id_card = :idCard", nativeQuery = true)
+    @Modifying
+    void blockCard(@Param("idCard") Long cardId);
+
+    @Query(value =
+            "UPDATE card " +
+                    "SET balance = :balance " +
+                    "WHERE id_card = :idCard", nativeQuery = true)
+    @Modifying
+    void rechargeBalance(@Param("balance") Integer balance, @Param("idCard") Long cardId);
 
 }
