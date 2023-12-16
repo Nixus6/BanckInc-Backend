@@ -7,6 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TransactionRepository {
-    Transaction purchaseTransaction(Transaction transaction);
+    Transaction save(Transaction transaction);
     Optional<List<Transaction>> getTransaction(int cardId);
 }

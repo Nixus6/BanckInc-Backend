@@ -22,7 +22,7 @@ public class TransactionPerRepository implements TransactionRepository {
     private TransactionMapper mapper;
 
     @Override
-    public Transaction purchaseTransaction(Transaction transaction) {
+    public Transaction save(Transaction transaction) {
         TransactionEntity transactionEntity = mapper.toTransactionEntity(transaction);
         return mapper.toTransaction(transactionCrudRepository.save(transactionEntity));
     }
