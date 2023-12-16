@@ -10,6 +10,9 @@ import com.credibanco.bankincback.persistence.mapper.TransactionMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
+
 @Repository
 public class TransactionPerRepository implements TransactionRepository {
     @Autowired
@@ -22,5 +25,11 @@ public class TransactionPerRepository implements TransactionRepository {
     public Transaction purchaseTransaction(Transaction transaction) {
         TransactionEntity transactionEntity = mapper.toTransactionEntity(transaction);
         return mapper.toTransaction(transactionCrudRepository.save(transactionEntity));
+    }
+
+    @Override
+    public Optional<List<Transaction>> getTransaction(int cardId) {
+        List<TransactionEntity> card = transactionCrudRepository.findByIdTransaction(cardId);
+        return Optional.of(mapper.toTransactionsList(card));
     }
 }

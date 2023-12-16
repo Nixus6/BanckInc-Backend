@@ -16,7 +16,7 @@ public interface TransactionMapper {
             @Mapping(source = "idTransaction",target = "transactionId"),
     })
     Transaction toTransaction(TransactionEntity transactionEntity);
-    List<Transaction> toTransactions(List<Transaction> transactions);
+    List<Transaction> toTransactionsList(List<TransactionEntity> transactions);
     @InheritInverseConfiguration
     TransactionEntity toTransactionEntity(Transaction transaction);
 }

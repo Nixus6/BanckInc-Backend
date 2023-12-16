@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -24,5 +26,8 @@ public class TransactionService {
     public Transaction purchaseTransaction(Transaction transaction){
         Transaction transactionCreate = Transaction.builder().totalPrice(transaction.getTotalPrice()).state(TransactionState.SUCCESSFUL).cardId(transaction.getCardId()).transactionDate(LocalDateTime.now()).build();
         return this.transactionRepository.purchaseTransaction(transactionCreate);
+    }
+    public Optional<List<Transaction>> getTransaction(int cardId) {
+        return this.transactionRepository.getTransaction(cardId);
     }
 }
