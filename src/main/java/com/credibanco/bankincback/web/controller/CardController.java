@@ -1,6 +1,7 @@
 package com.credibanco.bankincback.web.controller;
 
 import com.credibanco.bankincback.domain.Card;
+import com.credibanco.bankincback.domain.dto.RechargeBalanceDto;
 import com.credibanco.bankincback.domain.service.CardService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/card")
@@ -49,13 +51,22 @@ public class CardController {
     }
 
     @PostMapping("/balance")
-    public ResponseEntity<Card> rechargeBalance(@RequestBody Card card){
+    public ResponseEntity<String> rechargeBalance(@RequestBody RechargeBalanceDto rechargeBalanceDto){
         try {
-            this.cardService.rechargeBalance(card.getBalance(),card.getCardId());
-            return ResponseEntity.ok().build();
+            Optional<List<Card>> cardsOptional = this.cardService.checkBalance(Long.parseLong(rechargeBalanceDto.getCardId()));
+            if (cardsOptional.isPresent()) {
+                Card card = cardsOptional.get().getFirst();
+                this.cardService.rechargeBalance(card, Integer.parseInt(rechargeBalanceDto.getBalance()));
+                return ResponseEntity.ok("Saldo recargado con éxito");
+            } else {
+                return ResponseEntity.badRequest().body("La tarjeta no existe");
+            }
+        } catch (NumberFormatException e) {
+            log.error("Error al parsear números", e);
+            return ResponseEntity.badRequest().body("Formato de número incorrecto");
         } catch (DataAccessException e) {
-            log.error("balance", e);
-            return ResponseEntity.badRequest().build(); // Otra respuesta de acuerdo a tu lógica
+            log.error("Error de acceso a datos", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno del servidor");
         }
     }
 
@@ -65,4 +76,6 @@ public class CardController {
                 .map(cards -> new ResponseEntity<>(cards, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+
+
 }

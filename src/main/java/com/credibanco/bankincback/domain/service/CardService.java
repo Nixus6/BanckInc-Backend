@@ -1,6 +1,7 @@
 package com.credibanco.bankincback.domain.service;
 
 import com.credibanco.bankincback.domain.Card;
+import com.credibanco.bankincback.domain.dto.RechargeBalanceDto;
 import com.credibanco.bankincback.domain.repository.CardRepository;
 
 import com.credibanco.bankincback.persistence.entity.TypeCard;
@@ -54,8 +55,9 @@ public class CardService {
         this.cardRepository.blockCard(cardId);
     }
     @Transactional
-    public void rechargeBalance(Integer balance,Long cardId){
-        this.cardRepository.rechargeBalance(balance, cardId);
+    public void rechargeBalance(Card card, int requestBalance){
+        int newBalance = card.getBalance() + requestBalance;
+        this.cardRepository.rechargeBalance(newBalance, card.getCardId());
     }
 
     public Optional<List<Card>> checkBalance(Long cardId) {
