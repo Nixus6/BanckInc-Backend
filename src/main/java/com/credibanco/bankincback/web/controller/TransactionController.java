@@ -30,7 +30,11 @@ public class TransactionController {
 
     @PostMapping("/purchase")
     public ResponseEntity<Transaction> purchaseTransaction(@RequestBody Transaction transaction){
-        return new ResponseEntity<>(this.transactionService.purchaseTransaction(transaction), HttpStatus.CREATED);
+        return this.cardService.checkBalance(transaction.getCardId())
+                .map(cards -> new ResponseEntity<>(this.transactionService.purchaseTransaction(cards.getFirst(),transaction),HttpStatus.CREATED))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+
+//        return new ResponseEntity<>(this.transactionService.purchaseTransaction(transaction), HttpStatus.CREATED);
     }
 
     @GetMapping("/{transactionId}")

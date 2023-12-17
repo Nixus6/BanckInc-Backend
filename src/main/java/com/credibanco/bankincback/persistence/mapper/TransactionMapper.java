@@ -1,6 +1,5 @@
 package com.credibanco.bankincback.persistence.mapper;
 
-import com.credibanco.bankincback.domain.Card;
 import com.credibanco.bankincback.domain.Transaction;
 import com.credibanco.bankincback.persistence.entity.TransactionEntity;
 import org.mapstruct.InheritInverseConfiguration;
@@ -14,6 +13,7 @@ import java.util.List;
 public interface TransactionMapper {
     @Mappings({
             @Mapping(source = "idTransaction",target = "transactionId"),
+            @Mapping(source = "totalPrice",target = "price"),
     })
     Transaction toTransaction(TransactionEntity transactionEntity);
     List<Transaction> toTransactionsList(List<TransactionEntity> transactions);

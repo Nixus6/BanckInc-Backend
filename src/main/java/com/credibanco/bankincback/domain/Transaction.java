@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 public class Transaction {
     private int transactionId;
-    private int totalPrice;
+    private int price;
     private TransactionState state;
     private Long cardId;
     private LocalDateTime transactionDate;
