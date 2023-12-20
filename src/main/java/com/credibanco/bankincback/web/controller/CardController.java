@@ -2,7 +2,12 @@ package com.credibanco.bankincback.web.controller;
 
 import com.credibanco.bankincback.domain.Card;
 import com.credibanco.bankincback.domain.dto.RechargeBalanceDto;
+import com.credibanco.bankincback.domain.dto.WebResponseDto;
 import com.credibanco.bankincback.domain.service.CardService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +34,49 @@ public class CardController {
     }
 
     @GetMapping("/{cardId}/number")
-    public ResponseEntity<Card> save(@PathVariable String cardId){
+    @Operation(
+            description = "Crear una nueva tarjeta",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "Tarjeta Creada Con Exito!",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    examples = {
+                                            @ExampleObject(
+                                                    value = "{\"code\" : 201, \"status\" : \"Created\", \"message\" : \"Tarjeta Creada Con Exito!\" }"
+                                            )
+                                    }
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Bad Request!",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    examples = {
+                                            @ExampleObject(
+                                                    value = "{\"code\" : 400, \"status\" : \"Bad Request!\", \"message\" : \"Bad Request!\" }"
+                                            )
+                                    }
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Internal Server Error!",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    examples = {
+                                            @ExampleObject(
+                                                    value = "{\"code\" : 500, \"status\" : \"Internal Server Error!\", \"message\" : \"Internal Server Error!\" }"
+                                            )
+                                    }
+                            )
+                    )
+    }
+    )
+    public ResponseEntity<?> save(@PathVariable String cardId){
+//            return new ResponseEntity<>(new WebResponseDto(HttpStatus.CREATED.value(),HttpStatus.CREATED.getReasonPhrase(),"Tarjeta Creada Con Exito!"),HttpStatus.OK);
             return new ResponseEntity<>(this.cardService.save(cardId), HttpStatus.CREATED);
     }
     @PostMapping("/enroll")
