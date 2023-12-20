@@ -5,7 +5,6 @@ import com.credibanco.bankincback.domain.Transaction;
 import com.credibanco.bankincback.domain.repository.CardRepository;
 import com.credibanco.bankincback.domain.repository.TransactionRepository;
 import com.credibanco.bankincback.persistence.entity.TransactionState;
-import com.credibanco.bankincback.persistence.entity.TypeCard;
 import jakarta.transaction.Transactional;
 import org.hibernate.TransactionException;
 import org.slf4j.Logger;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 @Service
 public class TransactionService {
@@ -55,17 +53,20 @@ public class TransactionService {
         return this.transactionRepository.getTransaction(cardId);
     }
 
-    public Transaction anulationTransaction(Transaction transaction, Card card){
-        int newBalance = card.getBalance() + transaction.getPrice();
-
-        card.setBalance(newBalance);
-        this.cardRepository.save(card);
-
-        transaction.setState(TransactionState.CANCELLED);
-        return this.transactionRepository.save(transaction);
-
-//        Transaction transactionCreate = Transaction.builder().totalPrice(transaction.getTotalPrice()).state(TransactionState.CANCELED).cardId(transaction.getCardId()).transactionDate(transaction.).build();
-//        return this.transactionRepository.save(transactionCreate);
-
+    @Transactional
+    public void anulationTransaction(Transaction transaction, Card card){
+        try {
+            int newBalance = card.getBalance() + transaction.getPrice();
+            this.cardRepository.rechargeBalance(newBalance, card.getCardId());
+            this.transactionRepository.anulationTransaction(transaction.getTransactionId());
+        } catch (DataAccessException e) {
+            // Manejar problemas de acceso a datos (por ejemplo, problemas al interactuar con la base de datos)
+            log.error("Error de acceso a datos al anular la transacción", e);
+            throw new TransactionException("Error al procesar la anulación de la transacción", e);
+        } catch (Exception e) {
+            // Capturar excepciones generales (último recurso)
+            log.error("Error inesperado al anular la transacción", e);
+            throw new RuntimeException("Error inesperado al procesar la anulación de la transacción", e);
+        }
     }
 }

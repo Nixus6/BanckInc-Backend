@@ -34,15 +34,8 @@ public class CardController {
     }
     @PostMapping("/enroll")
     public ResponseEntity<Card> activateCard(@RequestBody Card card){
-        try {
-            log.info("Entro al controlador"+ card);
-//            Long parsedCardId = Long.parseLong(cardId);
             this.cardService.activateCard(card.getCardId());
             return ResponseEntity.ok().build();
-        } catch (NumberFormatException e) {
-            log.error("Error al convertir cardId a Long", e);
-            return ResponseEntity.badRequest().build(); // Otra respuesta de acuerdo a tu lógica
-        }
     }
     @DeleteMapping("/{cardId}")
     public ResponseEntity<Card> blockCard(@PathVariable Long cardId){

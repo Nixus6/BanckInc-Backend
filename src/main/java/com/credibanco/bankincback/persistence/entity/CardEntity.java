@@ -8,12 +8,15 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Entity
-@Table(name="card")
 @EntityListeners({AuditingEntityListener.class})
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
+
+@Entity
+@Table(name="card")
 public class CardEntity extends AuditableEntity {
     @Id
     @Column(name="id_card", nullable = false, length = 16)
@@ -32,3 +35,7 @@ public class CardEntity extends AuditableEntity {
     @OneToMany(mappedBy = "card")
     private List<TransactionEntity> transactions;
 }
+
+
+
+

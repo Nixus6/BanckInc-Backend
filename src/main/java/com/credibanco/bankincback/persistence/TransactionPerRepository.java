@@ -32,4 +32,9 @@ public class TransactionPerRepository implements TransactionRepository {
         List<TransactionEntity> card = transactionCrudRepository.findByIdTransaction(cardId);
         return Optional.of(mapper.toTransactionsList(card));
     }
+
+    @Override
+    public void anulationTransaction(int transactionId) {
+        transactionCrudRepository.anulationTransaction(transactionId);
+    }
 }

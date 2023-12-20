@@ -1,6 +1,5 @@
 package com.credibanco.bankincback.web.controller;
 
-import com.credibanco.bankincback.domain.Card;
 import com.credibanco.bankincback.domain.Transaction;
 import com.credibanco.bankincback.domain.service.CardService;
 import com.credibanco.bankincback.domain.service.TransactionService;
@@ -8,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,8 +31,6 @@ public class TransactionController {
         return this.cardService.checkBalance(transaction.getCardId())
                 .map(cards -> new ResponseEntity<>(this.transactionService.purchaseTransaction(cards.getFirst(),transaction),HttpStatus.CREATED))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-
-//        return new ResponseEntity<>(this.transactionService.purchaseTransaction(transaction), HttpStatus.CREATED);
     }
 
     @GetMapping("/{transactionId}")
@@ -54,6 +50,5 @@ public class TransactionController {
                             });
                 });
         return ResponseEntity.ok().build();
-//        return new ResponseEntity<>(this.transactionService.purchaseTransaction(transaction), HttpStatus.CREATED);
     }
 }
